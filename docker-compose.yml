@@ -24,13 +24,14 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: raa_service
-    expose:
-      - 5000
     restart: unless-stopped
     labels:
         - "traefik.enable=true"
+        - "traefik.http.services.raa_service.loadbalancer.server.port=5000"
         - "traefik.http.routers.raa_service.entrypoints=http"
         - "traefik.http.routers.raa_service.rule=Host(`raaservice.sd.di.huc.knaw.nl`)"
+    expose:
+      - 5000
     volumes:
       - /home/robz/:/home
     networks:

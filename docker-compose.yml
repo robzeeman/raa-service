@@ -25,13 +25,13 @@ services:
       dockerfile: Dockerfile
     container_name: raa_service
     restart: unless-stopped
+    ports:
+      - 5005:5000
     labels:
         - "traefik.enable=true"
-        - "traefik.http.services.raa_service.loadbalancer.server.port=5000"
+        - "traefik.http.services.raa_service.loadbalancer.server.port=5005"
         - "traefik.http.routers.raa_service.entrypoints=http"
         - "traefik.http.routers.raa_service.rule=Host(`raaservice.sd.di.huc.knaw.nl`)"
-    ports:
-      - 5000
     volumes:
       - /home/robz/:/home
     networks:

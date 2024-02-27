@@ -29,7 +29,6 @@ services:
     restart: unless-stopped
     labels:
         - "traefik.enable=true"
-        - "traefik.http.services.raa_service.loadbalancer.server.port=5000"
         - "traefik.http.routers.raa_service.entrypoints=http"
         - "traefik.http.routers.raa_service.rule=Host(`raaservice.sd.di.huc.knaw.nl`)"
     volumes:
@@ -39,7 +38,7 @@ services:
 
 volumes:
   raa_es:
-    external: false
+    external: true
 
 networks:
   traefik-public:

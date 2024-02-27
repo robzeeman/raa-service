@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: raa_es
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Dlog4j2.formatMsgNoLookups=true
+    ports:
+      - 9209:9200
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.raa_service.entrypoints=http"
+      - "traefik.http.routers.raa_service.rule=Host(`raa_es)"
+    volumes:
+      - raa_es:/usr/share/elasticsearch/data
+      - /home/robz/:/home
+    networks:
+      - traefik-public
+
+  raa_service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: raa_service
+    expose:
+      - 5000
+    ports:
+      - 5009:5000
+    restart: unless-stopped
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.raa_service.loadbalancer.server.port=5009"
+        - "traefik.http.routers.raa_service.entrypoints=http"
+        - "traefik.http.routers.raa_service.rule=Host(`raaservice.sd.di.huc.knaw.nl`)"
+    volumes:
+      - /home/robz/:/home
+    networks:
+      - traefik-public
+
+volumes:
+  raa_es:
+    external: false
+
+networks:
+  traefik-public:
+    external: true

@@ -29,7 +29,7 @@ services:
       - 5000
     labels:
         - "traefik.enable=true"
-        - "traefik.http.services.raaservice.loadbalancer.server.port=5005"
+        - "traefik.http.services.raaservice.loadbalancer.server.port=5000"
         - "traefik.http.routers.raaservice.entrypoints=http"
         - "traefik.http.routers.raaservice.rule=Host(`raaservice.sd.di.huc.knaw.nl`)"
     volumes:
